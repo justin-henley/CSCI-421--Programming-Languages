@@ -16,7 +16,7 @@ fun mymap2 _ = "2 NOT FINISHED";
   of characters and returns the list of integer codes of those characters.
   For example, if you evaluate ordlist [#”A”,#”b”,#”C”] you should get [65, 98, 67].
   (Refer to Exercise 2 on page 144.) *)
-fun ordlist _ = "3 NOT FINISHED";
+val ordlist = map ord;
 
 (*  4
   Write a function named mylength of type ‘a list -> int that returns the length
