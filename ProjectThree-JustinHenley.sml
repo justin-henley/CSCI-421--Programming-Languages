@@ -1,32 +1,100 @@
-(*  1
-  Define a function named mymap1 with the same type and behavior as built-in map
-  function without actually using map . This should be one line of code and
-  should use foldr or foldl. (Refer to problem Exercise 24 on page 147.) *)
-fun mymap1 _ = "1 NOT FINISHED";
+(*
+Author: Justin Henley, CSCI 421_VA_S2021
+Date: 2021-03-04
+Project Three: Map and fold
+*)
 
+(*  Requires: f is a function, either named or anonymous
+              the argument after f is a list of size 0 or greater
+    Returns:  A list in which every element has been modified by f
+    val mymap1 = fn : ('a -> 'b) -> 'a list -> 'b list
+ *)
+fun mymap1 f = foldr (fn (a,b) => [f a] @ b) [];
 
-(*  2
-  Define a function named mymap2 with the same type and behavior as map , but unlike
-  before you may not use foldr nor foldl. You still cannot use map itself either.
-  (Refer to problem Exercise 26 on page 147.) *)
-fun mymap2 _ = "2 NOT FINISHED";
+(*  Requires: f is a function, either named or anonymous
+              the argument after f is a list of size 0 or greater
+    Returns:  A list in which every element has been modified by f
+    val mymap2 = fn : ('a -> 'b) -> 'a list -> 'b list
+ *)
+fun mymap2 f list =
+      if null list then nil
+      else [f (hd list)] @ (mymap2 f (tl list));
 
-(*  3
-  Write a function named ordlist of type char list -> int list that take a list
-  of characters and returns the list of integer codes of those characters.
-  For example, if you evaluate ordlist [#”A”,#”b”,#”C”] you should get [65, 98, 67].
-  (Refer to Exercise 2 on page 144.) *)
+(*  Requires: The argument following ordlist is a character list or nil
+    Returns: ordlist returns a function to convert the contents of the character
+            list to their integer ASCII values.  Returns an int list.
+
+    val ordlist = fn : char list -> int list
+*)
 val ordlist = map ord;
 
-(*  4
-  Write a function named mylength of type ‘a list -> int that returns the length
-  of a list. You cannot use the built-in length function.
-  (Refer to Exercise 11 on page 145.) *)
-fun mylength _ = "4 NOT FINISHED";
+(*  Requires: list is a list of any type or nil
+    Returns: The length of the list
 
-(*  5
-  Write a function named max of type int list -> int that returns the largest
-  element of a list of integers. Your function must use either foldr or foldl
-  and need not behave well if the list is empty. (Yes, this is the same function
-  from Project 1. Here you must use a fold variant rather than recursion.) *)
-fun max _ = "5 NOT FINISHED";
+    val mylength = fn : 'a list -> int
+*)
+fun mylength list = foldl (fn (_,b) => b + 1) 0 list;
+
+(*  Requires: A non-empty integer list
+    Returns:  The maximum value of the integer list
+
+    val max = fn : int list -> int
+*)
+fun max (head::tail) = foldl (fn (a,b) => if (a>b) then a else b) head tail;
+
+(*
+SAMPLE RUN
+
+- mymap1 ~ nil;
+val it = [] : int list
+
+- mymap1 ~ [1];
+val it = [~1] : int list
+
+- mymap1 ~ [1,2,3];
+val it = [~1,~2,~3] : int list
+
+- mymap2 ~ nil;
+val it = [] : int list
+
+- mymap2 ~ [1];
+val it = [~1] : int list
+
+- mymap2 ~ [1,2,3];
+val it = [~1,~2,~3] : int list
+
+- ordlist [];
+val it = [] : int list
+
+- ordlist [#"A"];
+val it = [65] : int list
+
+- ordlist [#"A",#"B",#"C"];
+val it = [65,66,67] : int list
+
+- mylength nil;
+val it = 0 : int
+
+- mylength [1];
+val it = 1 : int
+
+- mylength [1,0];
+val it = 2 : int
+
+- mylength [#"a", #"b", #"c"];
+val it = 3 : int
+
+- max [1];
+val it = 1 : int
+
+- max [0];
+val it = 0 : int
+
+- max [8,2,5,9,4,7,1,3];
+val it = 9 : int
+
+- max [~3,~5,~2];
+val it = ~2 : int
+
+END SAMPLE RUN
+*)
